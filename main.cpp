@@ -2,7 +2,7 @@
 #include <vector>
 #include <string>
 
-// This is your data blueprint
+// Data blueprint
 struct Transaction {
     std::string name;
     std::string category;
@@ -15,10 +15,42 @@ int main() {
 
     std::cout << "--- Welcome to your C++ Budget Tracker ---" << std::endl;
     
-    // Hardcode one for testing
-    ledger.push_back({"Grocery Store", "Food", 55.20});
+    int choice = 0;
 
-    std::cout << "First item: " << ledger[0].name << " | $" << ledger[0].amount << std::endl;
+    while (true) {
+        std::cout << "\nMenu:" << std::endl;
+        std::cout << "1. Add Transaction" << std::endl;
+        std::cout << "2. View Transactions" << std::endl;
+        std::cout << "3. Quit" << std::endl;
+        std::cout << "Choose an option: ";
+        std::cin >> choice;
+
+        if (choice == 1) {
+            Transaction t;
+            
+            std::cout << "Enter transaction name: ";
+            std::cin >> t.name;
+
+            std::cout << "Enter category (Food, Rent, Fun, etc.): ";
+            std::cin >> t.category;
+
+            std::cout << "Enter amount ($): ";
+            std::cin >> t.amount;
+
+            ledger.push_back(t); 
+            std::cout << "Transaction added!" << std::endl;
+
+        } else if (choice == 2) {
+            std::cout << "\n--- Your Transactions ---" << std::endl;
+        }
+
+        else if (choice == 3) {
+            std::cout << "Goodbye!" << std::endl;
+            break;
+        } else {
+            std::cout << "Invalid option, please try again." << std::endl;
+        }
+    }
 
     return 0;
 }
