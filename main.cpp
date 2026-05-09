@@ -41,8 +41,54 @@ int main() {
             std::cout << "Transaction added!" << std::endl;
 
         } else if (choice == 2) {
-            std::cout << "\n--- Your Transactions ---" << std::endl;
+            
+            if (ledger.empty()) {
+                std::cout << "No transactions to display." << std::endl;
+            } else {
+                std::cout << "\n--- Your Transactions ---" << std::endl;
+
+                double total = 0.0;
+
+                for (int i = 0; i < ledger.size(); ++i) {
+                    std::cout << ledger[i].name
+                                << " | " << ledger[i].category
+                                << " | $" << ledger[i].amount
+                                << std::endl;
+                    total += ledger[i].amount;
         }
+
+        std::cout << "Total Spent: $" << total << std::endl;
+
+        std::cout << "\n--- Spending by Category ---" << std::endl;
+
+        std::vector<std::string> seenCategories;
+
+        for (int i = 0; i < ledger.size(); ++i) {
+
+            std::string cat = ledger[i].category;
+
+            bool alreadySeen = false;
+            for (int j = 0; j < seenCategories.size(); ++j) {
+                if (seenCategories[j] == cat) {
+                    alreadySeen = true;
+                    break;
+                }
+            }
+
+            if (!alreadySeen) {
+                seenCategories.push_back(cat);
+
+                double catTotal = 0.0;
+
+                for (int k = 0; k < ledger.size(); ++k) {
+                    if (ledger[k].category == cat) {
+                        catTotal += ledger[k].amount;
+                    }
+                }
+                std::cout << cat << ": $" << catTotal << std::endl;
+            }
+        }
+
 
         else if (choice == 3) {
             std::cout << "Goodbye!" << std::endl;
