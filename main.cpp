@@ -161,6 +161,11 @@ int main() {
             std::cout << "Budget limit set!" << std::endl;
 
         } else if (choice == 4) {
+            ledger.clear();
+            remove(filename.c_str());
+            std::cout << "All transactions cleared and file deleted." << std::endl;
+
+        } else if (choice == 5) {
             saveToFile(ledger, filename);
             std::cout << "Goodbye!" << std::endl;
             break;
