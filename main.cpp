@@ -1,6 +1,8 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <fstream>
+#include <sstream>
 
 struct Transaction {
     std::string name;
@@ -8,10 +10,56 @@ struct Transaction {
     double amount;
 };
 
+void saveToFile(const std::vector<Transaction>& ledger, const std::string& filename) {
+    std::ofstream file(filename);
+    if (file.is_open()) {
+        std::cout << "Error: Unable to open file as file is already open." << std::endl;
+        return;
+    }
+
+    for (int i = 0; i < ledger.size(); ++i) {
+        file << ledger[i].name << "," << ledger[i].category << "," << ledger[i].amount << "\n";
+    }
+
+    file.close();
+    std::cout << "Data saved to " << filename << std::endl;
+}
+
+void loadFromFile(std::vector<Transaction>& ledger, const std::string& filename){
+    std::ifstream file(filename);
+
+    if (!file.is_open()) {
+        std::cout << "Error: Unable to open file." << std::endl;
+        return;
+    }
+
+    std::string line;
+    while (std::getline(file, line)) {
+
+        std::istringstream ss(line);
+        std::string name, category, amountStr;
+
+        std::getline(ss, name, ',');
+        std::getline(ss, category, ',');
+        std::getline(ss, amountStr, ',');
+
+        double amount = std::stod(amountStr);
+
+        Transaction t{name, category, amount};
+        ledger.push_back(t);
+    }
+    file.close();
+    std::cout << "Data loaded from " << filename << std::endl;
+}
+
 int main() {
     std::vector<Transaction> ledger;
 
     std::cout << "--- Welcome to your C++ Budget Tracker ---" << std::endl;
+
+    std::string filename = "budget_data.csv";
+
+    loadFromFile(ledger, filename);
 
     int choice = 0;
     double budgetLimit = 0.0;
@@ -107,6 +155,7 @@ int main() {
             std::cout << "Budget limit set!" << std::endl;
 
         } else if (choice == 4) {
+            saveToFile(ledger, filename);
             std::cout << "Goodbye!" << std::endl;
             break;
 
