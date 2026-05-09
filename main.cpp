@@ -3,6 +3,8 @@
 #include <string>
 #include <fstream>
 #include <sstream>
+#include <algorithm>
+#include <cctype>
 
 struct Transaction {
     std::string name;
@@ -12,7 +14,7 @@ struct Transaction {
 
 void saveToFile(const std::vector<Transaction>& ledger, const std::string& filename) {
     std::ofstream file(filename);
-    if (file.is_open()) {
+    if (!file.is_open()) {
         std::cout << "Error: Unable to open file as file is already open." << std::endl;
         return;
     }
@@ -36,11 +38,13 @@ void loadFromFile(std::vector<Transaction>& ledger, const std::string& filename)
     std::string line;
     while (std::getline(file, line)) {
 
-        std::istringstream ss(line);
+        std::stringstream ss(line);
         std::string name, category, amountStr;
 
         std::getline(ss, name, ',');
+        std::transform(name.begin(), name.end(), name.begin(), tolower);
         std::getline(ss, category, ',');
+        std::transform(category.begin(), category.end(), category.begin(), tolower);
         std::getline(ss, amountStr, ',');
 
         double amount = std::stod(amountStr);
@@ -79,9 +83,11 @@ int main() {
 
             std::cout << "Enter transaction name: ";
             std::cin >> t.name;
+            std::transform(t.name.begin(), t.name.end(), t.name.begin(), tolower);
 
             std::cout << "Enter category (Food, Rent, Fun, etc.): ";
             std::cin >> t.category;
+            std::transform(t.category.begin(), t.category.end(), t.category.begin(), tolower);
 
             std::cout << "Enter amount ($): ";
             std::cin >> t.amount;
