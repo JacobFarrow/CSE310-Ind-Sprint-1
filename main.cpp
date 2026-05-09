@@ -74,7 +74,8 @@ int main() {
         std::cout << "1. Add Transaction" << std::endl;
         std::cout << "2. View Transactions" << std::endl;
         std::cout << "3. Set Budget Limit" << std::endl;
-        std::cout << "4. Quit" << std::endl;
+        std::cout << "4. Clear Data" << std::endl;
+        std::cout << "5. Save and Exit" << std::endl;
         std::cout << "Choose an option: ";
         std::cin >> choice;
 
